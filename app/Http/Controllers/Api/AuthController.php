@@ -41,8 +41,10 @@ class AuthController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'User registered successfully',
-                'data' => $user,
-                'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
+                'data' => [
+                    'user' => $user,
+                    'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
+                ],
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -77,8 +79,22 @@ class AuthController extends Controller
                     'message' => 'Email or Password is incorrect',
                 ], 401);
             }
+
+            $user = User::where('email', $request->email)->first();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'User logged in successfully',
+                'data' => [
+                    'user' => $user,
+                    'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
+                ],
+            ], 200);
         } catch (\Throwable $th) {
-            //throw $th;
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
         }
     }
 }
