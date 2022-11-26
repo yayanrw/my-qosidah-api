@@ -29,3 +29,11 @@ Route::controller(AuthController::class)->group(function () {
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
+
+// 404 handler
+Route::fallback(function () {
+    return response()->json([
+        'status' => false,
+        'message' => 'Page not found'
+    ], 404);
+});
