@@ -84,11 +84,28 @@ class AuthController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'User logged in successfully',
+                'message' => 'Logged in successfully',
                 'data' => [
                     'user' => $user,
                     'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
                 ],
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function logout()
+    {
+        try {
+            Auth::user()->currentAccessToken()->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Logged out successfully',
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
