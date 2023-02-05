@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\QosidahController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +29,11 @@ Route::controller(AuthController::class)->group(function () {
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    // Qosidah
+    Route::resource('/qosidah', QosidahController::class);
 });
+
 
 // 404 handler
 Route::fallback(function () {
