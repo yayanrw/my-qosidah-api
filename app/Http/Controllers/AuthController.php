@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
+use App\Traits\HttpResponses;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,26 +13,12 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    use HttpResponses;
+
+    public function register(StoreUserRequest $request)
     {
         try {
-            $validate = Validator::make(
-                $request->all(),
-                [
-                    'name' => 'required',
-                    'email' => 'required|email|unique:users',
-                    'password' => 'required',
-
-                ],
-            );
-
-            if ($validate->fails()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Validation errors',
-                    'errors' => $validate->errors(),
-                ], 401);
-            }
+            $request->validated($request->all());
 
             $user = User::create([
                 'name' => $request->name,
@@ -38,19 +26,16 @@ class AuthController extends Controller
                 'password' => Hash::make($request->password),
             ]);
 
-            return response()->json([
+            return $this->success([
                 'status' => true,
                 'message' => 'User registered successfully',
                 'data' => [
                     'user' => $user,
                     'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
                 ],
-            ], 200);
+            ]);
         } catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => $th->getMessage(),
-            ], 500);
+            return $this->error($th->getMessage(), 'Error occured', 500);
         }
     }
 
