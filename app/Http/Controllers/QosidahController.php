@@ -7,6 +7,7 @@ use App\Http\Requests\StoreQosidahRequest;
 use App\Http\Requests\UpdateQosidahRequest;
 use App\Http\Resources\QosidahResource;
 use App\Traits\HttpResponses;
+use Illuminate\Support\Facades\Auth;
 
 class QosidahController extends Controller
 {
@@ -42,7 +43,20 @@ class QosidahController extends Controller
      */
     public function store(StoreQosidahRequest $request)
     {
-        //
+        try {
+            $request->validated($request->all());
+
+            $qosidah = Qosidah::create([
+                'title' => $request->title,
+                'title_latin' => $request->title_latin,
+                'title_translate' => $request->title_translate,
+                'user_id' => Auth::user()->id,
+            ]);
+
+            return $this->success($qosidah);
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
     }
 
     /**

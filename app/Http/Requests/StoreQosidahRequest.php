@@ -13,7 +13,7 @@ class StoreQosidahRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class StoreQosidahRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => ['required', 'string', 'max:255'],
+            'title_latin' => ['string', 'max:255'],
+            'title_translate' => ['max:255'],
         ];
     }
 }
