@@ -21,4 +21,9 @@ class Qosidah extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function qosidah_details()
+    {
+        return $this->hasMany(QosidahDetail::class);
+    }
 }
