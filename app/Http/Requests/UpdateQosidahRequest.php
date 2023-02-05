@@ -24,7 +24,9 @@ class UpdateQosidahRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => ['required', 'string', 'max:255'],
+            'title_latin' => ['max:255'],
+            'title_translate' => ['max:255'],
         ];
     }
 }
