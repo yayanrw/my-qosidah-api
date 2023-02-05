@@ -28,12 +28,8 @@ class AuthController extends Controller
             ]);
 
             return $this->success([
-                'status' => true,
-                'message' => 'User registered successfully',
-                'data' => [
-                    'user' => $user,
-                    'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
-                ],
+                'user' => $user,
+                'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
             ]);
         } catch (\Throwable $th) {
             return $this->error($th->getMessage(), 'Error occured', 500);
@@ -54,7 +50,7 @@ class AuthController extends Controller
             return $this->success([
                 'user' => $user,
                 'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
-            ], 'Logged in successfully', 200);
+            ]);
         } catch (\Throwable $th) {
             return $this->error($th->getMessage(), 'Error occured', 500);
         }
