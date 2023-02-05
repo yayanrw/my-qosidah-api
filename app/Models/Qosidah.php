@@ -13,6 +13,10 @@ class Qosidah extends Model
         'user_id', 'title', 'title_latin', 'title_translate',
     ];
 
+    protected $hidden = [
+        'user_id',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
