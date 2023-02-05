@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Traits\HttpResponses;
 use App\Models\User;
@@ -39,47 +40,23 @@ class AuthController extends Controller
         }
     }
 
-    public function login(Request $request)
+    public function login(LoginUserRequest $request)
     {
         try {
-            $validate = Validator::make(
-                $request->all(),
-                [
-                    'email' => 'required|email',
-                    'password' => 'required',
-                ],
-            );
-
-            if ($validate->fails()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Validation errors',
-                    'errors' => $validate->errors(),
-                ], 401);
-            }
+            $request->validated($request->all());
 
             if (!Auth::attempt($request->only(['email', 'password']))) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Email or Password is incorrect',
-                ], 401);
+                return $this->error('', 'Email or Password is incorrect', 401);
             }
 
             $user = User::where('email', $request->email)->first();
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Logged in successfully',
-                'data' => [
-                    'user' => $user,
-                    'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
-                ],
-            ], 200);
+            return $this->success([
+                'user' => $user,
+                'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
+            ], 'Logged in successfully', 200);
         } catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => $th->getMessage(),
-            ], 500);
+            return $this->error($th->getMessage(), 'Error occured', 500);
         }
     }
 
