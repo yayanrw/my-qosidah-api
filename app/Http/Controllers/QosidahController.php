@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Qosidah;
 use App\Http\Requests\StoreQosidahRequest;
 use App\Http\Requests\UpdateQosidahRequest;
+use App\Http\Resources\QosidahResource;
+use App\Traits\HttpResponses;
 
 class QosidahController extends Controller
 {
+    use HttpResponses;
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +19,9 @@ class QosidahController extends Controller
      */
     public function index()
     {
-        //
+        return $this->success(QosidahResource::collection(
+            Qosidah::all()
+        ));
     }
 
     /**
