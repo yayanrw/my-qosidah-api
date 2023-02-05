@@ -15,6 +15,9 @@ class CreateQosidahsTable extends Migration
     {
         Schema::create('qosidahs', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('title_latin');
+            $table->string('title_translate');
             $table->timestamps();
         });
     }
