@@ -110,6 +110,11 @@ class QosidahController extends Controller
      */
     public function destroy(Qosidah $qosidah)
     {
-        //
+        try {
+            $qosidah->delete();
+            return $this->success();
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
     }
 }
