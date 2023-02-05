@@ -67,7 +67,11 @@ class QosidahController extends Controller
      */
     public function show(Qosidah $qosidah)
     {
-        //
+        try {
+            return $this->success($qosidah);
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
     }
 
     /**
