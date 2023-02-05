@@ -15,6 +15,15 @@ class CreateQosidahDetailsTable extends Migration
     {
         Schema::create('qosidah_details', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('qosidah_id');
+            $table->foreign('qosidah_id')
+                ->references('id')
+                ->on('qosidahs')
+                ->onDelete('cascade');
+            $table->integer('line');
+            $table->string('lyric');
+            $table->string('lyric_latin')->nullable();
+            $table->string('lyric_translate')->nullable();
             $table->timestamps();
         });
     }
