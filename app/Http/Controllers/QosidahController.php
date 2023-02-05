@@ -94,7 +94,12 @@ class QosidahController extends Controller
      */
     public function update(UpdateQosidahRequest $request, Qosidah $qosidah)
     {
-        //
+        try {
+            $qosidah->update($request->all());
+            return $this->success($qosidah);
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
     }
 
     /**
