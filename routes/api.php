@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\QosidahController;
+use App\Http\Controllers\QosidahDetailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Qosidah
     Route::resource('/qosidah', QosidahController::class);
+    Route::resource('/qosidah-detail', QosidahDetailController::class);
 });
 
 
