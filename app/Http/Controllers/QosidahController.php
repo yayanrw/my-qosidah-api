@@ -20,9 +20,13 @@ class QosidahController extends Controller
      */
     public function index()
     {
-        return $this->success(QosidahResource::collection(
-            Qosidah::all()
-        ));
+        try {
+            return $this->success(QosidahResource::collection(
+                Qosidah::all()
+            ));
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
     }
 
     /**
