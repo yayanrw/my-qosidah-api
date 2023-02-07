@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Qosidah;
 use App\Http\Requests\StoreQosidahRequest;
 use App\Http\Requests\UpdateQosidahRequest;
+use App\Http\Resources\QosidahDetailResource;
 use App\Http\Resources\QosidahResource;
+use App\Models\QosidahDetail;
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Auth;
 
@@ -72,7 +74,11 @@ class QosidahController extends Controller
     public function show(Qosidah $qosidah)
     {
         try {
-            return $this->success($qosidah);
+            return $this->success(
+                QosidahDetailResource::collection(
+                    Qosidah::find($qosidah)
+                )
+            );
         } catch (\Throwable $th) {
             return $this->error($th->getMessage());
         }

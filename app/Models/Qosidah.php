@@ -24,6 +24,6 @@ class Qosidah extends Model
 
     public function qosidah_details()
     {
-        return $this->hasMany(QosidahDetail::class);
+        return $this->hasMany(QosidahDetail::class)->orderBy('line', 'asc');
     }
 }
