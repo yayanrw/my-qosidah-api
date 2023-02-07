@@ -13,7 +13,7 @@ class StoreQosidahDetailRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,11 @@ class StoreQosidahDetailRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'qosidah_id' => ['required'],
+            'line' => ['required', 'integer'],
+            'lyric' => ['required', 'string', 'max:255'],
+            'lyric_latin' => ['string', 'max:255'],
+            'lyric_translate' => ['string', 'max:255'],
         ];
     }
 }
